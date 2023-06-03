@@ -5,8 +5,10 @@ import {
     REGISTER_USER
 } from './types'
 
+const url = 'https://online-shop-mern-boilerplate.vercel.app/'
+
 export function loginUser(dataToSubmit) {
-    const request = axios.post(`https://online-shop-mern-boilerplate.vercel.app/api/users/login`, dataToSubmit)
+    const request = axios.post(`${url}api/users/login`, dataToSubmit)
         .then(res => res.data);
 
     return {
@@ -17,7 +19,7 @@ export function loginUser(dataToSubmit) {
 }
 
 export function registerUser(dataToSubmit) {
-    const request = axios.post(`https://online-shop-mern-boilerplate.vercel.app/api/users/register`, dataToSubmit)
+    const request = axios.post(`${url}api/users/register`, dataToSubmit)
         .then(resp => resp.data);
 
     return {
