@@ -5,7 +5,7 @@ module.exports = function (app) {
         '/api',
         createProxyMiddleware({
             // target: 'http://localhost:5000',
-            target: 'https://online-shop-mern-boilerplate.vercel.app/',
+            target: 'https://online-shop-mern-boilerplate.vercel.app/api/',
             changeOrigin: true,
         })
     );
