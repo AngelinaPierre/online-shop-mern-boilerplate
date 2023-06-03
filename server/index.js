@@ -34,10 +34,10 @@ mongoose.connect(uri, {
 }).catch(err => console.error(err))
 
 
-// // route and link
-// app.get('/', (req, res) => {
-//     res.json({ "Hello": "I am happy to deploy our application" })
-// })
+// route and link
+app.get('/', (req, res) => {
+    res.json({ "Hello": "I am happy to deploy our application" })
+})
 
 
 
@@ -45,4 +45,4 @@ mongoose.connect(uri, {
 //     console.log(`Backend is running on port ${port}`)
 // });
 
-module.exports = app
+// module.exports = app
