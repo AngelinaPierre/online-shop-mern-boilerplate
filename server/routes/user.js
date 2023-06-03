@@ -1,41 +1,26 @@
-// entry point for backend
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-
+const router = express.Router();
 const { UserModel } = require('../models/user');
+
 const { auth } = require('../middleware/auth');
 
-const config = require('../config/key');
+router.get("/auth", auth, (req, res) => {
+    res.status(200).json({
+        _id: req.user._id,
+        isAdmin: req.user.role === 0 ? false : true,
+        isAuth: true,
+        email: req.user.email,
+        name: req.user.name,
+        lastname: req.user.lastname,
+        role: req.user.role,
+        image: req.user.image,
+    });
+});
 
-const port = process.env.PORT || config.PORT;
-const uri = config.MONGODB_URI;
+router.post("/register", (req, res) => {
 
-// connecting to mongodb
-mongoose.connect(uri, {
-    useNewUrlParser: true
-}).then(() => console.log('MONGDB connected!')).catch(err => console.error(err))
+    const user = new User(req.body);
 
-// creating server
-const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cookieParser());
-
-// route and link
-app.get('/', (req, res) => {
-    res.json({ "Hello": "I am happy to deploy our application" })
-})
-
-
-
-// user register routing
-app.post('/api/users/register', (req, res) => {
-    // req  = json, use bodyParser to be able to read.
-    const user = new UserModel(req.body); // creating a user using mongodb info retrived from the client
-
-    // pre save code in (user.js)
 
     user.save().then((doc) => {
         return res.status(200).json({
@@ -45,24 +30,9 @@ app.post('/api/users/register', (req, res) => {
     }).catch((err) => {
         return res.json({ success: false, err });
     })
-})
+});
 
-// Login authentication routing
-app.get('/api/users/auth', auth, (req, res) => {
-    res.status(200).json({
-        _id: req._id,
-        isAuth: true,
-        email: req.user.email,
-        name: req.user.name,
-        lastname: req.user.lastname,
-        role: req.user.role
-    })
-})
-
-
-// login routing
-app.post('/api/users/login', (req, res) => {
-    // find email in database
+router.post("/login", (req, res) => {
 
     UserModel.findOne({
         email: req.body.email
@@ -99,12 +69,9 @@ app.post('/api/users/login', (req, res) => {
     }).catch(err => {
         res.status(400).send(err)
     })
-})
+});
 
-// logout routing = using token
-app.get('/api/users/logout', auth, (req, res) => {
-    // find specific logged user id
-
+router.get("/logout", auth, (req, res) => {
     UserModel.findByIdAndUpdate(
         { _id: req.user._id },
         { token: '' },
@@ -120,11 +87,6 @@ app.get('/api/users/logout', auth, (req, res) => {
             err
         })
     })
-})
-
-
-app.listen(port, () => {
-    console.log(`Backend is running on port ${port}`)
 });
 
-module.exports = app
+module.exports = router;
