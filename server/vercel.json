@@ -1,9 +1,9 @@
 {
-    "version":1,
+    "version":2,
     "name":"online-shop-client",
     "builds":[
         {
-            "src":"index.js",
+            "src":"./index.js",
             "use":"@vercel/node"
         }
     ],
