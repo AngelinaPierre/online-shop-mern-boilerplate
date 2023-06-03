@@ -19,7 +19,7 @@ router.get("/auth", auth, (req, res) => {
 
 router.post("/register", (req, res) => {
 
-    const user = new User(req.body);
+    const user = new UserModel(req.body);
 
 
     user.save().then((doc) => {
