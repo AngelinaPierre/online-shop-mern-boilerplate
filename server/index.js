@@ -1,48 +1,56 @@
-// entry point for backend
-const express = require('express');
-const cors = require('cors');
-const http = require('http');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-
-// const { UserModel } = require('./models/user');
-// const { auth } = require('./middleware/auth');
-
-const config = require('./config/key');
-
-const port = process.env.PORT || config.PORT;
-const uri = process.env.MONGODB_URI || config.MONGODB_URI;
+const express = require("express");
 const app = express();
-// creating server
-app.use(cors());
+const path = require("path");
+const cors = require('cors')
+
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+
+const config = require("./config/key");
+
+
+const mongoose = require("mongoose");
+const connect = mongoose.connect(config.mongoURI,
+  {
+    useNewUrlParser: true, useUnifiedTopology: true,
+    useCreateIndex: true, useFindAndModify: false
+  })
+  .then(() => console.log('MongoDB Connected...'))
+  .catch(err => console.log(err));
+
+app.use(cors())
+
+//to not get any deprecation warning or error
+//support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({ extended: true }));
+//to get json data
+// support parsing of application/json type post data
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use('/api/users', require('./routes/user'))
-
-const server = http.createServer(app);
-// connecting to mongodb
-mongoose.connect(uri, {
-    useNewUrlParser: true
-}).then(() => {
-    console.log('MONGDB connected!');
-    server.listen(port, port, () => {
-        console.log(`Backend is running on port ${port}`)
-    })
-}).catch(err => console.error(err))
+app.use('/api/users', require('./routes/users'));
+app.use('/api/product', require('./routes/product'));
 
 
-// route and link
-app.get('/', (req, res) => {
-    res.json({ "Hello": "I am happy to deploy our application" })
-})
+//use this to show the image you have in node js server to client (react js)
+//https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
+app.use('/uploads', express.static('uploads'));
 
+// Serve static assets if in production
+if (process.env.NODE_ENV === "production") {
 
+  // Set static folder   
+  // All the javascript and css files will be read and served from this folder
+  app.use(express.static("client/build"));
 
-// app.listen(port, () => {
-//     console.log(`Backend is running on port ${port}`)
-// });
+  // index.html for all page routes    html or routing and naviagtion
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+  });
+}
 
-// module.exports = app
+const port = process.env.PORT || 5000
+
+app.listen(port, () => {
+  console.log(`Server Listening on ${port}`)
+});

@@ -1,22 +1,25 @@
 {
-  "name": "online-shop-client",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.4.0",
-    "materialize-css": "^1.0.0-rc.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.0.7",
+    "antd": "^3.24.1",
+    "axios": "^0.19.2",
+    "core-js": "^3.6.4",
+    "formik": "^1.5.8",
+    "moment": "^2.24.0",
+    "react": "^16.8.6",
+    "react-app-polyfill": "^1.0.6",
+    "react-dom": "^16.8.6",
+    "react-dropzone": "^14.2.3",
+    "react-icons": "^3.7.0",
+    "react-redux": "^7.1.0-rc.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "5.0.1",
-    "redux": "^4.2.1",
+    "react-scripts": "3.4.1",
+    "redux": "^4.0.0",
     "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.4.2",
-    "web-vitals": "^2.1.4"
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.27.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -25,10 +28,7 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -43,6 +43,6 @@
     ]
   },
   "devDependencies": {
-    "http-proxy-middleware": "^2.0.6"
+    "http-proxy-middleware": "^1.0.3"
   }
 }
